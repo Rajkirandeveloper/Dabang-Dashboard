@@ -1,70 +1,244 @@
-# Getting Started with Create React App
+# Task Dash - React Dashboard Implementation Notes
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React dashboard application built with Create React App. It uses reusable UI components, chart components, shared data files, and React Router for sidebar page navigation.
 
-## Available Scripts
+## 1. Project Setup
 
-In the project directory, you can run:
+1. Create or open the project folder:
 
-### `npm start`
+   ```bash
+   cd task-dash
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. Install project dependencies:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+   ```bash
+   npm install
+   ```
 
-### `npm test`
+3. Start the development server:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```bash
+   npm start
+   ```
 
-### `npm run build`
+4. Open the app in the browser:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```text
+   http://localhost:3000
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. Create a production build:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   npm run build
+   ```
 
-### `npm run eject`
+## 2. Main Dependencies
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- `react`: Builds the component-based UI.
+- `react-dom`: Renders React into the browser DOM.
+- `react-router-dom`: Handles route navigation from the sidebar.
+- `recharts`: Renders dashboard charts.
+- `react-scripts`: Provides Create React App scripts for start, build, and test.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 3. Folder Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```text
+task-dash/
+  src/
+    App.js
+    Dashboard.jsx
+    components/
+      Sidebar.jsx
+      Topbar.jsx
+      TodaySales.jsx
+      VisitorInsights.jsx
+      TotalRevenue.jsx
+      CustomerSatisfaction.jsx
+      TargetVsReality.jsx
+      TopProducts.jsx
+      SalesMap.jsx
+      VolumeVsService.jsx
+      ui/
+        Cards.jsx
+    constants/
+      navItems.js
+    data/
+      chartData.js
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 4. Application Entry Flow
 
-## Learn More
+1. `src/index.js` renders the root React app.
+2. `src/App.js` defines all application routes.
+3. The default `/` path redirects to `/dashboard`.
+4. `Dashboard.jsx` provides the shared dashboard layout.
+5. `Sidebar.jsx` remains visible on every route.
+6. `Topbar.jsx` displays the current page title.
+7. The main content area changes based on the selected sidebar route.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 5. Routing Implementation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Routing is implemented in `src/App.js` using `BrowserRouter`, `Routes`, `Route`, and `Navigate`.
 
-### Code Splitting
+Current routes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```text
+/              -> redirects to /dashboard
+/dashboard     -> dashboard widgets and charts
+/leaderboard   -> Leaderboard page placeholder
+/order         -> Order page placeholder
+/products      -> Products page placeholder
+/sales-report  -> Sales Report page placeholder
+/messages      -> Messages page placeholder
+/settings      -> Settings page placeholder
+/sign-out      -> Sign Out page placeholder
+```
 
-### Analyzing the Bundle Size
+Unknown routes redirect back to `/dashboard`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 6. Sidebar Navigation
 
-### Making a Progressive Web App
+Sidebar navigation data is stored in `src/constants/navItems.js`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Each item contains:
 
-### Advanced Configuration
+- `icon`: Sidebar icon.
+- `label`: Text shown in the sidebar and topbar.
+- `path`: Route path used by React Router.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Example:
 
-### Deployment
+```js
+{ icon: "\uD83D\uDCCA", label: "Dashboard", path: "/dashboard" }
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+`Sidebar.jsx` maps over `NAV_ITEMS` and renders each item as a `NavLink`. `NavLink` automatically detects the active route, so the selected sidebar item is highlighted.
 
-### `npm run build` fails to minify
+## 7. Dashboard Layout
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`src/Dashboard.jsx` contains the shared page shell:
+
+- Left sidebar.
+- Top header.
+- Scrollable main content area.
+- `Outlet` for nested route content.
+
+The active page title is calculated from the current URL path:
+
+```js
+const activeNav = NAV_ITEMS.find((item) => item.path === pathname)?.label || "Dashboard";
+```
+
+That value is passed into `Topbar`:
+
+```jsx
+<Topbar pageTitle={activeNav} />
+```
+
+## 8. Dashboard Home Page
+
+The `/dashboard` route renders `DashboardHome`.
+
+`DashboardHome` contains three main rows:
+
+1. Sales summary and visitor insights.
+2. Revenue, customer satisfaction, and target comparison.
+3. Top products, sales map, and volume/service chart.
+
+The layout uses the local `Row` helper component to keep dashboard sections aligned with consistent spacing.
+
+## 9. Placeholder Pages
+
+Non-dashboard routes currently render `PlaceholderPage`.
+
+This keeps routing complete while allowing page content to be added later. For example, clicking `Leaderboard`, `Order`, `Products`, or `Settings` changes the URL and displays the matching page title.
+
+To replace a placeholder with a real page:
+
+1. Create a new component file inside `src/components` or `src/pages`.
+2. Import that component in `App.js`.
+3. Replace the matching `PlaceholderPage` route with the new component.
+
+Example:
+
+```jsx
+<Route path="/order" element={<OrderPage />} />
+```
+
+## 10. Reusable UI Components
+
+Reusable card components are stored in `src/components/ui/Cards.jsx`.
+
+Available helpers:
+
+- `SectionCard`: Used for dashboard sections with optional title, subtitle, and header action.
+- `StatCard`: Used for metric cards such as sales, orders, products, and customers.
+- `LegendRow`: Used to display chart legends consistently.
+
+These components help keep the dashboard layout consistent and reduce repeated styling code.
+
+## 11. Chart and Static Data
+
+Chart data is stored in `src/data/chartData.js`.
+
+Dashboard chart components import data from this file and pass it into Recharts components. Keeping chart data separate from UI components makes the project easier to maintain and update.
+
+## 12. Adding a New Sidebar Page
+
+To add a new sidebar page:
+
+1. Open `src/constants/navItems.js`.
+2. Add a new navigation object:
+
+   ```js
+   { icon: "\uD83D\uDCC4", label: "Reports", path: "/reports" }
+   ```
+
+3. Create the new page component.
+4. Add the route in `src/App.js`:
+
+   ```jsx
+   <Route path="/reports" element={<ReportsPage />} />
+   ```
+
+5. Start the app and click the new sidebar item.
+
+## 13. Testing the Implementation
+
+Use these checks after making changes:
+
+1. Run the app:
+
+   ```bash
+   npm start
+   ```
+
+2. Confirm `/` redirects to `/dashboard`.
+3. Click every sidebar item.
+4. Confirm the URL changes correctly.
+5. Confirm the active sidebar item changes.
+6. Confirm the topbar title matches the selected page.
+7. Run the production build:
+
+   ```bash
+   npm run build
+   ```
+
+## 14. Current Implementation Status
+
+- Dashboard page is implemented.
+- Sidebar navigation is implemented with React Router.
+- Default route redirects to Dashboard.
+- Other sidebar pages route correctly and show placeholder content.
+- Reusable card components are available.
+- Chart components are organized into separate dashboard components.
+
+## 15. Future Improvements
+
+- Replace placeholder pages with full page components.
+- Add responsive sidebar behavior for mobile screens.
+- Move inline styles into CSS modules or shared style files.
+- Add route-level tests.
+- Add real API data instead of static chart data.

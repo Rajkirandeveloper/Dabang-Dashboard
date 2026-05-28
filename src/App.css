@@ -36,3 +36,329 @@
     transform: rotate(360deg);
   }
 }
+
+* {
+  box-sizing: border-box;
+}
+
+.dashboard-content,
+.dashboard-main,
+.dashboard-row,
+.section-card {
+  min-width: 0;
+}
+
+.section-card {
+  overflow: hidden;
+}
+
+.recharts-responsive-container {
+  min-width: 0;
+}
+
+.top-products-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sales-map-wrap {
+  position: relative;
+}
+
+.sales-map-region,
+.sales-map-dot {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.15s ease, filter 0.15s ease, stroke-width 0.15s ease;
+}
+
+.sales-map-region:hover,
+.sales-map-region:focus,
+.sales-map-dot:hover,
+.sales-map-dot:focus {
+  opacity: 1;
+  filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
+  stroke-width: 2;
+}
+
+.sales-map-tooltip {
+  position: absolute;
+  z-index: 5;
+  min-width: 138px;
+  padding: 10px 12px;
+  border: 1px solid;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+  color: #1e1b4b;
+  pointer-events: none;
+  transform: translate(12px, -50%);
+}
+
+.sales-map-tooltip-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.sales-map-tooltip-title span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sales-map-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.sales-map-tooltip-row + .sales-map-tooltip-row {
+  margin-top: 4px;
+}
+
+.sales-map-tooltip-row strong {
+  color: #1e1b4b;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-row {
+    flex-wrap: wrap !important;
+  }
+
+  .section-card {
+    flex: 1 1 calc(50% - 10px) !important;
+  }
+
+  .dashboard-row:first-child .section-card:first-child {
+    flex-basis: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 0 10px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    box-shadow: 0 2px 16px rgba(99, 102, 241, 0.08) !important;
+  }
+
+  .sidebar-logo {
+    padding: 0 16px 10px !important;
+  }
+
+  .sidebar-nav {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    padding: 0 12px 2px !important;
+    scrollbar-width: none;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar-link {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    padding: 9px 13px !important;
+    gap: 7px !important;
+  }
+
+  .sidebar-pro {
+    display: none !important;
+  }
+
+  .topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 10px !important;
+    padding: 12px 16px !important;
+    align-items: center !important;
+  }
+
+  .topbar h1 {
+    font-size: 18px !important;
+    min-width: 0 !important;
+  }
+
+  .topbar-search {
+    grid-column: 1 / -1 !important;
+    order: 5 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .topbar-language {
+    display: none !important;
+  }
+
+  .topbar-user {
+    gap: 6px !important;
+  }
+
+  .topbar-user-text,
+  .topbar-user > span {
+    display: none !important;
+  }
+
+  .dashboard-main {
+    padding: 16px !important;
+    gap: 16px !important;
+    overflow-x: hidden !important;
+  }
+
+  .dashboard-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .section-card {
+    width: 100% !important;
+    flex: none !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+  }
+
+  .section-card-header {
+    gap: 12px !important;
+  }
+
+  .today-sales-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    min-width: 0 !important;
+    padding: 14px !important;
+  }
+
+  .legend-row {
+    justify-content: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .recharts-wrapper,
+  .recharts-surface {
+    max-width: 100% !important;
+  }
+
+  .recharts-responsive-container {
+    width: 100% !important;
+    height: 210px !important;
+  }
+
+  .top-products-scroll {
+    margin: 0 -4px;
+    padding: 0 4px 2px;
+  }
+
+  .top-products-table {
+    min-width: 430px;
+  }
+
+  .sales-map-tooltip {
+    max-width: calc(100% - 24px);
+    transform: translate(-50%, -110%);
+  }
+
+  .placeholder-page {
+    border-radius: 16px !important;
+    padding: 20px !important;
+    min-height: 220px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-logo {
+    padding-bottom: 8px !important;
+  }
+
+  .sidebar-link {
+    padding: 8px 11px !important;
+    font-size: 12px !important;
+  }
+
+  .dashboard-main {
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  .section-card {
+    padding: 14px !important;
+  }
+
+  .section-card-header {
+    align-items: flex-start !important;
+  }
+
+  .section-card-action {
+    flex-shrink: 0 !important;
+  }
+
+  .today-sales-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stat-card {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    column-gap: 12px !important;
+    row-gap: 3px !important;
+  }
+
+  .stat-card > div:first-child {
+    grid-row: span 3 !important;
+  }
+
+  .recharts-responsive-container {
+    height: 230px !important;
+  }
+
+  .top-products-table {
+    min-width: 390px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sidebar-label {
+    display: none;
+  }
+
+  .sidebar-link {
+    width: 38px !important;
+    height: 38px !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  .topbar-notification {
+    display: none !important;
+  }
+}
