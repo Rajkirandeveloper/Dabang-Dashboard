@@ -1,112 +1,381 @@
+// import { useState } from "react";
+// import {
+//   ComposableMap,
+//   Geographies,
+//   Geography,
+// } from "react-simple-maps";
+
+// // Natural Earth 110m TopoJSON — lightweight, no install needed
+// const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+// // ISO-3166 numeric codes mapped to highlight config
+// const COUNTRY_HIGHLIGHTS = {
+//   "840": { name: "United States", value: "$21.7k", share: "18%", fill: "#F97316" }, // USA
+//   "076": { name: "Brazil",        value: "$9.3k",  share: "8%",  fill: "#EF4444" }, // Brazil
+//   "682": { name: "Saudi Arabia",  value: "$6.1k",  share: "5%",  fill: "#3B82F6" }, // Saudi Arabia
+//   // "356": { name: "India",         value: "$19.5k", share: "16%", fill: "#14B8A6" }, // India
+//   "156": { name: "China",         value: "$18.6k", share: "15%", fill: "#8B5CF6" }, // China
+//   "360": { name: "Indonesia",     value: "$16.7k", share: "14%", fill: "#22C55E" }, // Indonesia
+// };
+
+// function Tooltip({ item, x, y, svgWidth }) {
+//   if (!item) return null;
+//   const tipW = 148;
+//   const left = x + 14 + tipW > svgWidth ? x - tipW - 10 : x + 14;
+//   const top  = Math.max(y - 10, 4);
+//   return (
+//     <div
+//       style={{
+//         position: "absolute",
+//         left,
+//         top,
+//         background: "#fff",
+//         border: `1.5px solid ${item.fill}`,
+//         borderRadius: 10,
+//         padding: "9px 14px",
+//         pointerEvents: "none",
+//         zIndex: 30,
+//         minWidth: tipW,
+//         boxShadow: "0 4px 18px rgba(0,0,0,0.13)",
+//         fontFamily: "'Inter','Segoe UI',sans-serif",
+//       }}
+//     >
+//       <div style={{
+//         display: "flex", alignItems: "center", gap: 7,
+//         fontWeight: 700, fontSize: 13, color: "#1a1a2e", marginBottom: 7,
+//       }}>
+//         <span style={{
+//           width: 9, height: 9, borderRadius: "50%",
+//           background: item.fill, flexShrink: 0, display: "inline-block",
+//         }} />
+//         {item.name}
+//       </div>
+//       {[["Sales", item.value], ["Share", item.share]].map(([label, val]) => (
+//         <div key={label} style={{
+//           display: "flex", justifyContent: "space-between",
+//           fontSize: 12, color: "#6b7280", marginTop: 3,
+//         }}>
+//           <span>{label}</span>
+//           <strong style={{ color: "#1a1a2e", fontWeight: 700 }}>{val}</strong>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
+
+// function WorldMap() {
+//   const [tooltip, setTooltip] = useState(null);
+//   const [wrapRef, setWrapRef] = useState(null);
+
+//   const getCountryInfo = (geo) => {
+//     const id = String(geo.id).padStart(3, "0");
+//     return (
+//       COUNTRY_HIGHLIGHTS[id] || {
+//         name: geo.properties?.name || "Country",
+//         value: "No data",
+//         share: "-",
+//         fill: "#94A3B8",
+//       }
+//     );
+//   };
+
+//   const handleMove = (geo, e) => {
+//     const rect = wrapRef?.getBoundingClientRect();
+//     if (!rect) return;
+//     setTooltip({ item: getCountryInfo(geo), x: e.clientX - rect.left, y: e.clientY - rect.top });
+//   };
+
+//   const handleLeave = () => setTooltip(null);
+
+//   return (
+//     <div ref={setWrapRef} style={{ position: "relative", width: "100%" }}>
+//       <ComposableMap
+//         projection="geoNaturalEarth1"
+//         projectionConfig={{ scale: 140, center: [15, 10] }}
+//         style={{ width: "100%", height: "auto" }}
+//       >
+//         {/* Ocean sphere background */}
+//         <rect x={0} y={0} width="100%" height="100%" fill="#EEF2FF" />
+
+//         <Geographies geography={GEO_URL}>
+//           {({ geographies }) =>
+//             geographies.map((geo) => {
+//               const id = String(geo.id).padStart(3, "0");
+//               const highlight = COUNTRY_HIGHLIGHTS[id];
+//               return (
+//                 <Geography
+//                   key={geo.rsmKey}
+//                   geography={geo}
+//                   fill={highlight ? highlight.fill : "#D1D5DB"}
+//                   stroke="#ffffff"
+//                   strokeWidth={highlight ? 0.8 : 0.5}
+//                   style={{
+//                     default: { outline: "none", opacity: highlight ? 0.95 : 1 },
+//                     hover:   { outline: "none", opacity: highlight ? 0.8 : 1, cursor: "pointer" },
+//                     pressed: { outline: "none" },
+//                   }}
+//                   onMouseMove={(e) => handleMove(geo, e)}
+//                   onMouseLeave={handleLeave}
+//                 />
+//               );
+//             })
+//           }
+//         </Geographies>
+//       </ComposableMap>
+
+//       {tooltip && (
+//         <Tooltip
+//           item={tooltip.item}
+//           x={tooltip.x}
+//           y={tooltip.y}
+//           svgWidth={wrapRef?.offsetWidth || 400}
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
+// export default function SalesMap() {
+//   return (
+//     <div
+//       style={{
+//         background: "#ffffff",
+//         borderRadius: 20,
+//         border: "1px solid #ebebf0",
+//         padding: "20px 20px 10px",
+//         boxShadow: "0 4px 24px rgba(99,102,241,0.08), 0 1px 4px rgba(0,0,0,0.05)",
+//         fontFamily: "'Inter','Segoe UI',sans-serif",
+//         width: "100%",
+//         boxSizing: "border-box",
+//       }}
+//     >
+//       <p
+//         style={{
+//           fontSize: 15,
+//           fontWeight: 800,
+//           color: "#1a1a6e",
+//           margin: "0 0 4px",
+//           letterSpacing: "-0.01em",
+//         }}
+//       >
+//         Sales Mapping by Country
+//       </p>
+//       <WorldMap />
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
 import { useState } from "react";
-import { SectionCard } from "./ui/Cards";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+} from "react-simple-maps";
 
-const REGIONS = [
-  { name: "North America", value: "$38.4k", share: "32%", d: "M 120 95 L 160 85 L 175 100 L 165 130 L 140 135 L 115 120 Z", fill: "#6366f1" },
-  { name: "South America", value: "$14.8k", share: "12%", d: "M 150 150 L 170 140 L 185 165 L 178 210 L 155 215 L 138 195 Z", fill: "#e0e7ff" },
-  { name: "Europe", value: "$24.2k", share: "20%", d: "M 255 70 L 290 65 L 300 85 L 285 100 L 255 95 Z", fill: "#e0e7ff" },
-  { name: "Africa", value: "$10.6k", share: "9%", d: "M 255 110 L 285 105 L 295 140 L 290 185 L 260 188 L 245 160 L 250 125 Z", fill: "#fbbf24" },
-  { name: "Russia", value: "$8.9k", share: "7%", d: "M 300 55 L 420 50 L 425 90 L 300 88 Z", fill: "#e0e7ff" },
-  { name: "India", value: "$19.5k", share: "16%", d: "M 340 105 L 365 100 L 370 140 L 355 155 L 335 140 Z", fill: "#6366f1" },
-  { name: "East Asia", value: "$28.1k", share: "23%", d: "M 370 70 L 430 65 L 440 105 L 375 110 Z", fill: "#e0e7ff" },
-  { name: "SE Asia", value: "$16.7k", share: "14%", d: "M 390 120 L 430 115 L 435 150 L 392 148 Z", fill: "#c4b5fd" },
-  { name: "Australia", value: "$7.4k", share: "6%", d: "M 405 175 L 450 168 L 460 205 L 430 215 L 400 205 Z", fill: "#e0e7ff" },
-];
+const GEO_URL =
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-const DOTS = [
-  { name: "United States", value: "$21.7k", share: "18%", cx: 145, cy: 110, fill: "#6366f1" },
-  { name: "Brazil", value: "$9.3k", share: "8%", cx: 160, cy: 172, fill: "#f59e0b" },
-  { name: "United Kingdom", value: "$13.5k", share: "11%", cx: 270, cy: 80, fill: "#6366f1" },
-  { name: "India", value: "$19.5k", share: "16%", cx: 352, cy: 125, fill: "#22c55e" },
-  { name: "China", value: "$18.6k", share: "15%", cx: 415, cy: 80, fill: "#6366f1" },
-];
+const COUNTRY_HIGHLIGHTS = {
+  "840": { name: "United States", value: "$21.7k", share: "18%", fill: "#F97316" },
+  "076": { name: "Brazil",        value: "$9.3k",  share: "8%",  fill: "#EF4444" },
+  "682": { name: "Saudi Arabia",  value: "$6.1k",  share: "5%",  fill: "#3B82F6" },
+  "356": { name: "India",         value: "$19.5k", share: "16%", fill: "#14B8A6" },
+  "156": { name: "China",         value: "$18.6k", share: "15%", fill: "#8B5CF6" },
+  "360": { name: "Indonesia",     value: "$16.7k", share: "14%", fill: "#22C55E" },
+};
 
+/* ── Tooltip ─────────────────────────────────────────────────────── */
+function Tooltip({ item, x, y, containerWidth }) {
+  if (!item) return null;
+  const tipW = 148;
+  const left = x + 14 + tipW > containerWidth ? x - tipW - 10 : x + 14;
+  const top  = Math.max(y - 10, 4);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left,
+        top,
+        background: "#fff",
+        border: `1.5px solid ${item.fill}`,
+        borderRadius: 10,
+        padding: "8px 12px",
+        pointerEvents: "none",
+        zIndex: 30,
+        minWidth: tipW,
+        boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+        fontFamily: "'DM Sans','Nunito','Inter',sans-serif",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          fontWeight: 700,
+          fontSize: 12,
+          color: "#1a1a2e",
+          marginBottom: 6,
+        }}
+      >
+        <span
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: item.fill,
+            flexShrink: 0,
+          }}
+        />
+        {item.name}
+      </div>
+      {[
+        ["Sales", item.value],
+        ["Share", item.share],
+      ].map(([label, val]) => (
+        <div
+          key={label}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: 11,
+            color: "#6b7280",
+            marginTop: 2,
+          }}
+        >
+          <span>{label}</span>
+          <strong style={{ color: "#1a1a2e", fontWeight: 700 }}>{val}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Map ─────────────────────────────────────────────────────────── */
 function WorldMap() {
   const [tooltip, setTooltip] = useState(null);
+  const [wrapRef, setWrapRef] = useState(null);
 
-  const showTooltip = (item, event) => {
-    const bounds = event.currentTarget.ownerSVGElement.getBoundingClientRect();
+  const handleMove = (geo, e) => {
+    const id = String(geo.id).padStart(3, "0");
+    const info = COUNTRY_HIGHLIGHTS[id];
+    if (!info) return;
+    const rect = wrapRef?.getBoundingClientRect();
+    if (!rect) return;
     setTooltip({
-      ...item,
-      x: event.clientX - bounds.left,
-      y: event.clientY - bounds.top,
+      item: info,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
     });
   };
 
-  const focusTooltip = (item, x, y) => {
-    setTooltip({ ...item, x, y });
+  const handleLeave = (geo) => {
+    const id = String(geo.id).padStart(3, "0");
+    if (COUNTRY_HIGHLIGHTS[id]) setTooltip(null);
   };
 
   return (
-    <div className="sales-map-wrap">
-      <svg viewBox="0 0 500 240" width="100%" style={{ display: "block" }}>
-        <rect width="500" height="240" fill="#f0f4ff" rx="12" />
-        {REGIONS.map((r) => (
-          <path
-            key={r.name}
-            className="sales-map-region"
-            tabIndex={0}
-            aria-label={`${r.name}: ${r.value}, ${r.share} of sales`}
-            d={r.d}
-            fill={r.fill}
-            opacity={0.85}
-            stroke="#fff"
-            strokeWidth={1.2}
-            onMouseMove={(event) => showTooltip(r, event)}
-            onMouseLeave={() => setTooltip(null)}
-            onFocus={() => focusTooltip(r, 255, 88)}
-            onBlur={() => setTooltip(null)}
-          />
-        ))}
-        {DOTS.map((dot) => (
-          <circle
-            key={dot.name}
-            className="sales-map-dot"
-            tabIndex={0}
-            aria-label={`${dot.name}: ${dot.value}, ${dot.share} of sales`}
-            cx={dot.cx}
-            cy={dot.cy}
-            r={5}
-            fill={dot.fill}
-            onMouseMove={(event) => showTooltip(dot, event)}
-            onMouseLeave={() => setTooltip(null)}
-            onFocus={() => focusTooltip(dot, dot.cx, dot.cy)}
-            onBlur={() => setTooltip(null)}
-          />
-        ))}
-      </svg>
+    <div ref={setWrapRef} style={{ position: "relative", width: "100%" }}>
+      <ComposableMap
+        projection="geoNaturalEarth1"
+        projectionConfig={{ scale: 130, center: [15, 8] }}
+        style={{ width: "100%", height: "auto" }}
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              const id = String(geo.id).padStart(3, "0");
+              const highlight = COUNTRY_HIGHLIGHTS[id];
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={highlight ? highlight.fill : "#D9DCE8"}
+                  stroke="#ffffff"
+                  strokeWidth={highlight ? 0.7 : 0.4}
+                  style={{
+                    default: {
+                      outline: "none",
+                      opacity: highlight ? 0.93 : 1,
+                    },
+                    hover: {
+                      outline: "none",
+                      opacity: highlight ? 0.75 : 1,
+                      cursor: highlight ? "pointer" : "default",
+                    },
+                    pressed: { outline: "none" },
+                  }}
+                  onMouseMove={(e) => handleMove(geo, e)}
+                  onMouseLeave={() => handleLeave(geo)}
+                />
+              );
+            })
+          }
+        </Geographies>
+      </ComposableMap>
 
       {tooltip && (
-        <div
-          className="sales-map-tooltip"
-          style={{
-            left: `${tooltip.x}px`,
-            top: `${tooltip.y}px`,
-            borderColor: tooltip.fill,
-          }}
-        >
-          <div className="sales-map-tooltip-title">
-            <span style={{ background: tooltip.fill }} />
-            {tooltip.name}
-          </div>
-          <div className="sales-map-tooltip-row">
-            <span>Sales</span>
-            <strong>{tooltip.value}</strong>
-          </div>
-          <div className="sales-map-tooltip-row">
-            <span>Share</span>
-            <strong>{tooltip.share}</strong>
-          </div>
-        </div>
+        <Tooltip
+          item={tooltip.item}
+          x={tooltip.x}
+          y={tooltip.y}
+          containerWidth={wrapRef?.offsetWidth || 400}
+        />
       )}
     </div>
   );
 }
 
+/* ── Card — matches your dashboard SectionCard style ─────────────── */
 export default function SalesMap() {
   return (
-    <SectionCard title="Sales Mapping by Country" style={{ flex: 1.3 }}>
-      <WorldMap />
-    </SectionCard>
+    <div
+      style={{
+        /* flex sizing — same proportion as in screenshot */
+        flex: "1.3 1 0",
+        minWidth: 0,
+
+        /* card shell matching TopProducts / VolumeVsService */
+        background: "#ffffff",
+        borderRadius: 16,
+        border: "1px solid #f0f1f5",
+        padding: "18px 18px 8px",
+        boxShadow: "0 8px 24px rgba(15,23,42,0.06)",
+        fontFamily: "'DM Sans','Nunito','Inter',sans-serif",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Title row — matches other cards */}
+      <p
+        style={{
+          fontSize: 14,
+          fontWeight: 700,
+          color: "#1e1b4b",
+          margin: "0 0 8px",
+          letterSpacing: "-0.01em",
+          flexShrink: 0,
+        }}
+      >
+        Sales Mapping by Country
+      </p>
+
+      {/* Map fills remaining space */}
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <WorldMap />
+      </div>
+    </div>
   );
 }
+
